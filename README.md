@@ -38,7 +38,7 @@ virtualenvs.prompt = "{project_name}-py{python_version}"
 ## Poetry-pycharm
 Folder `poetry-pycharm` contains a project set up in pycharm.
 
-[<img src="doc/pycharm01.png" width="300"/>](doc/pycharm_01.png)
+[<img src="doc/pycharm01.png" width="300"/>](doc/pycharm01.png)
 
 This results in a very simple project structure.
 If you want to do any package development you will have to add a lot of structure (e.g. the 'source'-layout) to this.
@@ -90,7 +90,7 @@ C:.
 ```
 You could add the venv when 'adding' the pycharm project.
 
-[<img src="doc/pycharm02.png" width="300"/>](doc/pycharm_02.png)
+[<img src="doc/pycharm02.png" width="300"/>](doc/pycharm02.png)
 
 Moving to a 'source'-layout manually also requires updates to the pyprojec.toml file so this is not advised (see next project).
 
