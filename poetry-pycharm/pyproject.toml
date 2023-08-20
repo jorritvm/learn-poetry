@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "poetry-pycharm"
+version = "0.1.0"
+description = ""
+authors = ["Jorrit Vander Mynsbrugge <44178217+jorritvm@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
