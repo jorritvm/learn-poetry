@@ -173,7 +173,7 @@ Installing the current project: poetry-new-src (0.1.0)
 
 You can add your pycharm project, by selecting a 'new virtual poetry environment' without risk of overwriting/erasing any packages you might have added already.
 
-## cookiecutter
+## poetry-cookie
 You can install cookiecutter into your system python installation
 ```
 pip install cookiecutter
