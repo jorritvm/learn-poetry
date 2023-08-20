@@ -174,7 +174,86 @@ Installing the current project: poetry-new-src (0.1.0)
 You can add your pycharm project, by selecting a 'new virtual poetry environment' without risk of overwriting/erasing any packages you might have added already.
 
 ## cookiecutter
-to do
+You can install cookiecutter into your system python installation
+```
+pip install cookiecutter
+```
+
+Scafolding a new project from the parent directory is done like this:
+```
+cookiecutter https://github.com/py-pkgs/py-pkgs-cookiecutter.git
+```
+after which you have to fill out the form:
+```
+C:\Users\jorrit\Desktop\learn-poetry>cookiecutter https://github.com/py-pkgs/py-pkgs-cookiecutter.git
+You've downloaded C:\Users\jorrit\.cookiecutters\py-pkgs-cookiecutter before. Is it okay to delete and re-download it?
+[y/n] (y):
+  [1/8] author_name (Monty Python): Jorrit
+  [2/8] package_name (mypkg): poetry-cookie
+  [3/8] package_short_description (A package for doing great things!):
+  [4/8] package_version (0.1.0):
+  [5/8] python_version (3.9):
+  [6/8] Select open_source_license
+    1 - MIT
+    2 - Apache License 2.0
+    3 - GNU General Public License v3.0
+    4 - CC0 v1.0 Universal
+    5 - BSD 3-Clause
+    6 - Proprietary
+    7 - None
+    Choose from [1/2/3/4/5/6/7] (1):
+  [7/8] Select include_github_actions
+    1 - no
+    2 - ci
+    3 - ci+cd
+    Choose from [1/2/3] (1):
+
+```
+This provides you with a 'source-layout' that is preconfigured for package building, pytest, sphinx, poetry, ...
+```
+Folder PATH listing for volume Windows-SSD
+Volume serial number is 6E8D-45D5
+C:.
+ª   .gitignore
+ª   .readthedocs.yml
+ª   CHANGELOG.md
+ª   CONDUCT.md
+ª   CONTRIBUTING.md
+ª   LICENSE
+ª   pyproject.toml
+ª   README.md
+ª   
++---docs
+ª       changelog.md
+ª       conduct.md
+ª       conf.py
+ª       contributing.md
+ª       example.ipynb
+ª       index.md
+ª       make.bat
+ª       Makefile
+ª       requirements.txt
+ª       
++---src
+ª   +---poetry_cookie
+ª           poetry_cookie.py
+ª           __init__.py
+ª           
++---tests
+        test_poetry_cookie.py
+```
+
+
+## adding dependencies
+you can add normal dependencies like this:
+```
+poetry add pkgname
+```
+
+and development dependencies like this:
+```
+poetry add --dev pkgname
+```
 
 ## building a package
 `poetry build` is a single command to convert your package into a sdist and a wheel
@@ -211,3 +290,8 @@ C:.
 +---tests
         __init__.py
 ```
+
+## references
+* https://packaging.python.org/en/latest/overview/
+* https://py-pkgs.org/03-how-to-package-a-python
+  
