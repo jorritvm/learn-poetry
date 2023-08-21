@@ -13,4 +13,7 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
+    from poetry_cookie import poetry_cookie
+    print(poetry_cookie.give_me(5))
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

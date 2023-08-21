@@ -1,9 +1,26 @@
 # Learn poetry
 
+- [Learn poetry](#learn-poetry)
+  - [Purpose](#purpose)
+  - [Structuring a python package project using poetry or cookiecutter](#structuring-a-python-package-project-using-poetry-or-cookiecutter)
+    - [Flat versus src layout](#flat-versus-src-layout)
+    - [Poetry setup](#poetry-setup)
+    - [Poetry-pycharm](#poetry-pycharm)
+    - [Poetry-new](#poetry-new)
+    - [Poetry-new-src](#poetry-new-src)
+    - [poetry-cookie](#poetry-cookie)
+  - [adding dependencies](#adding-dependencies)
+  - [developing and testing (installing in editable mode)](#developing-and-testing-installing-in-editable-mode)
+  - [building a package](#building-a-package)
+  - [installing a package from wheel](#installing-a-package-from-wheel)
+  - [references](#references)
+
+
 ## Purpose
 The purpose of this repo is to learn poetry for package management and package building. Different approaches are compared.
 
-## Flat versus src layout
+## Structuring a python package project using poetry or cookiecutter
+### Flat versus src layout
 A lot has been written on this topic:
 * https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
 * https://py-pkgs.org/04-package-structure#the-source-layout
@@ -11,7 +28,7 @@ A lot has been written on this topic:
 TLDR; the source layout has some advantages but requires the package to be installed (in editable mode) before you can use / test your code.
 
 
-## Poetry setup
+### Poetry setup
 * `poetry` is best installed following [the official documentation guidelines](https://python-poetry.org/docs/#installation) instead of using pip. 
 * `poetry` has its own virtual environments but uses a cache for this. I prefer to have my virtual environments inside my package folder:
 ```
@@ -35,7 +52,7 @@ virtualenvs.prefer-active-python = false
 virtualenvs.prompt = "{project_name}-py{python_version}"
 ```
 
-## Poetry-pycharm
+### Poetry-pycharm
 Folder `poetry-pycharm` contains a project set up in pycharm.
 
 [<img src="doc/pycharm01.png" width="300"/>](doc/pycharm01.png)
@@ -66,7 +83,7 @@ You can also start the poetry shell by typing
 `poetry shell` 
 
 
-## Poetry-new
+### Poetry-new
 Folder `poetry-new` contains a project set up with 
 ```
 C:\Users\jorrit\Desktop\learn-poetry>poetry new poetry-new
@@ -94,7 +111,7 @@ You could add the venv when 'adding' the pycharm project.
 
 Moving to a 'source'-layout manually also requires updates to the pyprojec.toml file so this is not advised (see next project).
 
-## Poetry-new-src
+### Poetry-new-src
 There is an easy way to set up a python package project in source layout:
 ```
 C:\Users\jorrit\Desktop\learn-poetry>poetry new --src poetry-new-src
@@ -173,7 +190,7 @@ Installing the current project: poetry-new-src (0.1.0)
 
 You can add your pycharm project, by selecting a 'new virtual poetry environment' without risk of overwriting/erasing any packages you might have added already.
 
-## poetry-cookie
+### poetry-cookie
 You can install cookiecutter into your system python installation
 ```
 pip install cookiecutter
@@ -255,6 +272,67 @@ and development dependencies like this:
 poetry add --dev pkgname
 ```
 
+## developing and testing (installing in editable mode)
+A package is installed using `poetry install` .
+
+If your project has a virtual environment, you can check whether your package is properly installed by looking in the .venv folder. There should be a meta data folder and a path file refering to the source code location.
+
+```
+C:\Users\jorrit\Desktop\learn-poetry\poetry_cookie\.venv\Lib\site-packages>dir
+ Volume in drive C is Windows-SSD
+ Volume Serial Number is 6E8D-45D5
+
+ Directory of C:\Users\jorrit\Desktop\learn-poetry\poetry_cookie\.venv\Lib\site-packages
+
+2023-08-21  20:45    <DIR>          .
+2023-08-21  20:44    <DIR>          ..
+...
+2023-08-21  20:46    <DIR>          pluggy
+2023-08-21  20:45    <DIR>          pluggy-1.2.0.dist-info
+2023-08-21  20:44    <DIR>          poetry_cookie-0.1.0.dist-info  <---
+2023-08-21  20:44                57 poetry_cookie.pth              <---
+2023-08-21  20:45               263 py.py
+2023-08-21  20:46    <DIR>          pytest
+2023-08-21  20:45    <DIR>          pytest-7.4.0.dist-info
+2023-08-21  20:44    <DIR>          setuptools
+2023-08-21  20:44    <DIR>          setuptools-68.0.0.dist-info
+2023-08-21  20:44                 0 setuptools-68.0.0.virtualenv
+...
+               8 File(s)          4.920 bytes
+              27 Dir(s)  627.426.631.680 bytes free
+
+C:\Users\jorrit\Desktop\learn-poetry\poetry_cookie\.venv\Lib\site-packages>type poetry_cookie.pth
+C:/Users/jorrit/Desktop/learn-poetry/poetry_cookie/src
+```
+This means all source files using this .venv can now import `poetry_cookie` because it is found on `sys.path`.
+
+Let's say we have written a piece of code and a test:
+Code: src/poetry_cookie/poetry_cookie.py
+```python
+def give_me(x):
+    return x
+```
+
+Test: tests/test_poetry_cookie.py
+```python
+from poetry_cookie import poetry_cookie
+
+def test_give_me():
+    assert poetry_cookie.give_me(5) == 5
+    assert poetry_cookie.give_me(0.0) == 0.0
+    assert poetry_cookie.give_me(True) == True
+``` 
+Then running pytest poses no problem:
+```
+(poetry-cookie-py3.9) PS C:\Users\jorrit\Desktop\learn-poetry\poetry_cookie> pytest
+======================================================================= test session starts =======================================================================  
+platform win32 -- Python 3.9.13, pytest-7.4.0, pluggy-1.2.0
+rootdir: C:\Users\jorrit\Desktop\learn-poetry\poetry_cookie
+collected 1 item                                                                                                                                                     
+tests\test_poetry_cookie.py .                                                                                                                                [100%]  
+======================================================================== 1 passed in 0.04s ======================================================================== 
+```
+
 ## building a package
 `poetry build` is a single command to convert your package into a sdist and a wheel
 ```
@@ -289,6 +367,37 @@ C:.
 ª           
 +---tests
         __init__.py
+```
+
+## installing a package from wheel
+We now install this package from the wheel into the venv of the `poetry-pycharm` project and test it.
+
+A simple pip install fixes that:
+```
+(poetry-pycharm-py3.9) PS C:\Users\jorrit\Desktop\learn-poetry\poetry-pycharm> pip install ..\poetry_cookie\dist\poetry_cookie-0.1.0-py3-none-any.whl
+Processing c:\users\jorrit\desktop\learn-poetry\poetry_cookie\dist\poetry_cookie-0.1.0-py3-none-any.whl
+Installing collected packages: poetry-cookie
+Successfully installed poetry-cookie-0.1.0
+```
+Notice how we:
+* are in the poetry-pycharm root
+* have an active poetry .venv
+* install the .whl and not the .tar.gz sdist.
+
+All that is left to do is test it:
+```python
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    print_hi('PyCharm')
+
+    from poetry_cookie import poetry_cookie
+    print(poetry_cookie.give_me(5)) 
+```
+returns:
+```
+C:\Users\jorrit\Desktop\learn-poetry\poetry-pycharm\.venv\Scripts\python.exe C:\Users\jorrit\Desktop\learn-poetry\poetry-pycharm\main.py 
+Hi, PyCharm
+5
 ```
 
 ## references
